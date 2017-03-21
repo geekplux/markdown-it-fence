@@ -1,7 +1,9 @@
-# markdown-it-fence
+# markdown-it-fence(WIP)
 
 [![NPM version](https://img.shields.io/npm/v/markdown-it-fence.svg?style=flat)](https://npmjs.com/package/markdown-it-fence) [![NPM downloads](https://img.shields.io/npm/dm/markdown-it-fence.svg?style=flat)](https://npmjs.com/package/markdown-it-fence) [![Build Status](https://img.shields.io/circleci/project/geekplux/markdown-it-fence/master.svg?style=flat)](https://circleci.com/gh/geekplux/markdown-it-fence) [![codecov](https://codecov.io/gh/geekplux/markdown-it-fence/branch/master/graph/badge.svg)](https://codecov.io/gh/geekplux/markdown-it-fence)
  [![donate](https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&style=flat)](https://github.com/geekplux/donate)
+
+> fence customize plugin for markdown-it
 
 ## Install
 
