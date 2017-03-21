@@ -1,30 +1,28 @@
 'use strict'
 
-const defaults = {
-  name: 'name',
-  marker: '`'
-}
-
-export default function (md, opts) {
-  const options = Object.assign({}, defaults, opts)
-
-  function defaultValidate (params) {
-    return params.trim().split(' ', 2)[0] === options.name
+export default function (md, name, opts) {
+  function defaultValidate(params) {
+    return params.trim().split(' ', 2)[0] === name
   }
 
-  function defaultRender (tokens, idx, _options, env, self) {
+  function defaultRender(tokens, idx, _options, env, self) {
     if (tokens[idx].nesting === 1) {
-      tokens[idx].attrPush([ 'class', options.name ])
+      tokens[idx].attrPush(['class', name])
     }
 
     return self.renderToken(tokens, idx, _options, env, self)
   }
 
-  function fence (state, startLine, endLine) {
-    let marker, len, params, nextLine, mem, token, markup
-    let haveEndMarker = false
+  const options = Object.assign({
+    validate: defaultValidate,
+    render: defaultRender
+  }, opts)
+
+  function fence(state, startLine, endLine) {
+    let marker = options.marker || '`'
     let pos = state.bMarks[startLine] + state.tShift[startLine]
     let max = state.eMarks[startLine]
+    let haveEndMarker = false
 
     if (state.sCount[startLine] - state.blkIndent >= 4) return false
     if (pos + 3 > max) return false
@@ -33,20 +31,20 @@ export default function (md, opts) {
 
     if (marker !== options.marker.charCodeAt(0)) return false
 
-    mem = pos
+    let mem = pos
     pos = state.skipChars(pos, marker)
-    len = pos - mem
+    let len = pos - mem
 
     if (len < 3) return false
 
-    markup = state.src.slice(mem, pos)
-    params = state.src.slice(pos, max)
+    const markup = state.src.slice(mem, pos)
+    const params = state.src.slice(pos, max)
 
     if (params.indexOf(String.fromCharCode(marker)) >= 0) return false
 
-    nextLine = startLine
+    let nextLine = startLine
 
-    while (1) {
+    for (;;) {
       nextLine++
       if (nextLine >= endLine) break
 
@@ -73,18 +71,18 @@ export default function (md, opts) {
     len = state.sCount[startLine]
     state.line = nextLine + (haveEndMarker ? 1 : 0)
 
-    if (defaultValidate(params)) token = state.push(options.name, 'div', 0)
+    let token
+    if (options.validate(params)) token = state.push(name, 'div', 0)
     else token = state.push('fence', 'code', 0)
     token.info = params
     token.content = state.getLines(startLine + 1, nextLine, len, true)
     token.markup = markup
-    token.map = [ startLine, state.line ]
+    token.map = [startLine, state.line]
 
     return true
   }
 
-  md.block.ruler.before('fence', options.name, fence, {
-    alt: [ 'paragraph', 'reference', 'blockquote', 'list' ]})
-  md.renderer.rules[options.name] = defaultRender
-
+  md.block.ruler.before('fence', name, fence, {
+    alt: ['paragraph', 'reference', 'blockquote', 'list']})
+  md.renderer.rules[name] = options.render
 }
