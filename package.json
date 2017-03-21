@@ -17,6 +17,12 @@
     "build": "bili --name index"
   },
   "author": "geekplux <geekplux@gmail.com>",
+  "keywords": [
+    "markdown",
+    "md",
+    "markdown-it",
+    "markdown-it-plugin"
+  ],
   "license": "MIT",
   "jest": {
     "testEnvironment": "node"
