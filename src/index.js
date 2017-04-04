@@ -29,8 +29,6 @@ export default function (md, name, opts) {
 
     marker = state.src.charCodeAt(pos)
 
-    if (marker !== options.marker.charCodeAt(0)) return false
-
     let mem = pos
     pos = state.skipChars(pos, marker)
     let len = pos - mem
