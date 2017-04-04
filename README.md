@@ -1,4 +1,4 @@
-# markdown-it-fence(WIP)
+# markdown-it-fence
 
 [![NPM version](https://img.shields.io/npm/v/markdown-it-fence.svg?style=flat)](https://npmjs.com/package/markdown-it-fence) [![NPM downloads](https://img.shields.io/npm/dm/markdown-it-fence.svg?style=flat)](https://npmjs.com/package/markdown-it-fence) [![Build Status](https://img.shields.io/circleci/project/geekplux/markdown-it-fence/master.svg?style=flat)](https://circleci.com/gh/geekplux/markdown-it-fence) [![codecov](https://codecov.io/gh/geekplux/markdown-it-fence/branch/master/graph/badge.svg)](https://codecov.io/gh/geekplux/markdown-it-fence)
  [![donate](https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&style=flat)](http://donate.geekplux.com)
@@ -8,17 +8,43 @@
 ## Install
 
 ```bash
-yarn add markdown-it-fence
+yarn add markdown-it-fence --save
+npm install markdown-it-fence --save
 ```
 
 ## Usage
 
 ```js
-const markdownItFence = require('markdown-it-fence')
+const markdownitfence = require('markdown-it-fence')
 
-markdownItFence()
-//=> foo
+function yourPlugin (md, options) {
+  return markdownitfence(md, 'yourPluginName', {
+    marker: yourMarker,   // default is '`'
+    render: yourRender
+  })
+}
+
+const md = require('markdown-it')();
+md.use(yourPlugin).render(`content you want to parse`)
+
 ```
+
+### Option params
+
+##### marker
+
+Type: `string`<br>
+Default: `
+
+Marker of fence block.
+
+##### render
+
+Type: `function`<br>
+Default: [defaultRender](./src/index.js)
+
+Render function.
+
 
 ## Contributing
 
