@@ -20,7 +20,8 @@ const markdownitfence = require('markdown-it-fence')
 function yourPlugin (md, options) {
   return markdownitfence(md, 'yourPluginName', {
     marker: yourMarker,   // default is '`'
-    render: yourRender
+    render: yourRender,
+    validate: yourValidate
   })
 }
 
@@ -45,6 +46,12 @@ Default: [defaultRender](./src/index.js)
 
 Render function.
 
+##### validate
+
+Type: `function`<br>
+Default: [defaultValidate](./src/index.js)
+
+Validate function.
 
 ## Contributing
 
