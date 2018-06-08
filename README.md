@@ -21,7 +21,7 @@ function yourPlugin (md, options) {
   return markdownitfence(md, 'yourPluginName', {
     marker: yourMarker,   // default is '`'
     render: yourRender,
-    validate: yourValidator
+    validate: yourValidate
   })
 }
 
