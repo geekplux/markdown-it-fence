@@ -3,11 +3,6 @@ import mdFence from '../src'
 
 const md = markdownIt()
 
-const testStr = `
-  \`\`\`test
-  I'm testing
-  \`\`\`
-`
 const res = 'I\'m testing'
 
 test('main', () => {
@@ -15,6 +10,12 @@ test('main', () => {
 })
 
 test('name unmatched', () => {
+  const testStr = `
+\`\`\`test
+I'm testing
+\`\`\`
+  `
+
   const plugin = () => mdFence(md, 'mytest', {
     render: () => res
   })
@@ -22,8 +23,7 @@ test('name unmatched', () => {
 })
 
 test('custom marker', () => {
-  const tStr =
-  `
+  const testStr = `
 :::test
 I'm testing
 :::
@@ -35,16 +35,16 @@ I'm testing
     })
   }
 
-  expect(md.use(plugin).render(tStr)).toBe(res)
+  expect(md.use(plugin).render(testStr)).toBe(res)
 })
 
-test('parse test', () => {
-  const tStr = `
-  \`\`\`
-  # Header1
-  \`\`\`
+test('default render test', () => {
+  const testStr = `
+\`\`\`
+# Header1
+\`\`\`
 
-  ### Header3
+### Header3
   `
 
   const text = `<pre><code># Header1
@@ -53,11 +53,25 @@ test('parse test', () => {
 `
 
   const plugin = () => {
-    mdFence(md, 'test', {
-      marker: '`',
-      render: () => res
+    mdFence(md, 'test')
+  }
+
+  expect(md.use(plugin).render(testStr)).toBe(text)
+})
+
+test('custom render', () => {
+  const testStr = `
+***customrender
+world
+***
+`
+
+  const plugin = () => {
+    mdFence(md, 'customrender', {
+      marker: '*',
+      render: (tokens, idx) => ('hello ' + tokens[idx].content).trim()
     })
   }
 
-  expect(md.use(plugin).render(tStr)).toBe(text)
+  expect(md.use(plugin).render(testStr)).toBe('hello world')
 })
