@@ -19,7 +19,7 @@ export default function (md, name, opts) {
   }, opts)
 
   function fence(state, startLine, endLine) {
-    let marker = options.marker || '`'
+    const optionMarker = options.marker || '`'
     let pos = state.bMarks[startLine] + state.tShift[startLine]
     let max = state.eMarks[startLine]
     let haveEndMarker = false
@@ -27,7 +27,9 @@ export default function (md, name, opts) {
     if (state.sCount[startLine] - state.blkIndent >= 4) return false
     if (pos + 3 > max) return false
 
-    marker = state.src.charCodeAt(pos)
+    const marker = state.src.charCodeAt(pos)
+
+    if (marker !== optionMarker.charCodeAt(0)) return false
 
     let mem = pos
     pos = state.skipChars(pos, marker)
