@@ -21,28 +21,43 @@ test('name unmatched', () => {
   expect(md.use(plugin).render(testStr)).toBe(`<pre><code class="language-test">I'm testing\n</code></pre>\n`)
 })
 
-// test('custom marker', () => {
-//   const tStr =
-//   `
-//     \:\:\:test
-//     I'm testing
-//     \:\:\:
-//   `
-//   const plugin = () => {
-//     mdFence(md, 'test', {
-//       marker: ':',
-//       render: () => res
-//     })
-//   }
+test('custom marker', () => {
+  const tStr =
+  `
+:::test
+I'm testing
+:::
+  `
+  const plugin = () => {
+    mdFence(md, 'test', {
+      marker: ':',
+      render: () => res
+    })
+  }
 
-//   expect(md.use(plugin).render(tStr)).toBe(res)
-// })
+  expect(md.use(plugin).render(tStr)).toBe(res)
+})
 
-// test('custom render', () => {
-//   const plugin = () => {
-//     mdFence(md, 'test', {
-//       render: () => res
-//     })
-//   }
-//   expect(md.use(plugin).render(testStr)).toBe(res)
-// })
+test('parse test', () => {
+  const tStr = `
+  \`\`\`
+  # Header1
+  \`\`\`
+
+  ### Header3
+  `
+
+  const text = `<pre><code># Header1
+</code></pre>
+<h3>Header3</h3>
+`
+
+  const plugin = () => {
+    mdFence(md, 'test', {
+      marker: '`',
+      render: () => res
+    })
+  }
+
+  expect(md.use(plugin).render(tStr)).toBe(text)
+})
