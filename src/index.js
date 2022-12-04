@@ -71,9 +71,8 @@ export default function (md, name, opts) {
     len = state.sCount[startLine]
     state.line = nextLine + (haveEndMarker ? 1 : 0)
 
-    let token
-    if (options.validate(params)) token = state.push(name, 'div', 0)
-    else token = state.push('fence', 'code', 0)
+    if (!options.validate(params)) return false
+    const token = state.push(name, 'div', 0)
     token.info = params
     token.content = state.getLines(startLine + 1, nextLine, len, true)
     token.markup = markup
