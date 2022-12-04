@@ -38,6 +38,32 @@ I'm testing
   expect(md.use(plugin).render(testStr)).toBe(res)
 })
 
+test('multiple plugins', () => {
+  const testStr = `
+:::test1
+I'm testing
+:::
+
+:::test2
+I'm another test
+:::
+  `
+  const plugin1 = () => {
+    mdFence(md, 'test1', {
+      marker: ':',
+      render: () => '(a)'
+    })
+  }
+  const plugin2 = () => {
+    mdFence(md, 'test2', {
+      marker: ':',
+      render: () => '(b)'
+    })
+  }
+
+  expect(md.use(plugin1).use(plugin2).render(testStr)).toBe('(a)(b)')
+})
+
 test('default render test', () => {
   const testStr = `
 \`\`\`
